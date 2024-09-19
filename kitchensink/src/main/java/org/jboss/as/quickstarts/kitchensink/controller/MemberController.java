@@ -21,17 +21,27 @@ import jakarta.enterprise.inject.Model;
 import jakarta.enterprise.inject.Produces;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import org.jboss.as.quickstarts.kitchensink.data.MemberRepository;
 import org.jboss.as.quickstarts.kitchensink.model.Member;
 import org.jboss.as.quickstarts.kitchensink.service.MemberRegistration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
 // Read more about the @Model stereotype in this FAQ:
 // http://www.cdi-spec.org/faq/#accordion6
-@Model
+//@Model
+@Controller("memberController")
+@ViewScoped()
 public class MemberController {
 
     @Inject
@@ -40,13 +50,34 @@ public class MemberController {
     @Inject
     private MemberRegistration memberRegistration;
 
-    @Produces
-    @Named
+    @Inject
+    private MemberRepository memberRepository;
+
+    @Inject
+    private Logger log;
+
     private Member newMember;
 
+    private List<Member> members;
+
+   
     @PostConstruct
     public void initNewMember() {
+
+        log.info("initNewMember");
         newMember = new Member();
+        //members = new ArrayList<Member>();
+        members = memberRepository.findAllByOrderByNameAsc();   
+        
+        log.info("initNewMember, members count: " + members.size());
+    }
+
+    public Member getNewMember() {
+        return newMember;
+    }
+
+    public List<Member> getMembers() {
+        return members;
     }
 
     public void register() throws Exception {

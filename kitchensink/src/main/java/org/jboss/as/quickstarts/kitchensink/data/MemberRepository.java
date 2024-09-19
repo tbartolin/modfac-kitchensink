@@ -17,26 +17,32 @@
 package org.jboss.as.quickstarts.kitchensink.data;
 
 import jakarta.enterprise.context.ApplicationScoped;
+/*
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+*/
 import java.util.List;
 
 import org.jboss.as.quickstarts.kitchensink.model.Member;
+import org.springframework.stereotype.Repository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 @ApplicationScoped
-public class MemberRepository {
+@Repository
+public interface MemberRepository extends  MongoRepository<Member, String> {
 
-    @Inject
-    private EntityManager em;
+    //@Inject
+    //private EntityManager em;
 
-    public Member findById(Long id) {
-        return em.find(Member.class, id);
-    }
+    //public Member findById(Long id) {
+    //    return em.find(Member.class, id);
+    //}
 
-    public Member findByEmail(String email) {
+    public Member findByEmail(String email);/* {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
         Root<Member> member = criteria.from(Member.class);
@@ -45,9 +51,10 @@ public class MemberRepository {
         // criteria.select(member).where(cb.equal(member.get(Member_.email), email));
         criteria.select(member).where(cb.equal(member.get("email"), email));
         return em.createQuery(criteria).getSingleResult();
-    }
+    }*/
 
-    public List<Member> findAllOrderedByName() {
+    /*
+    public List<Member> findAllOrderedByName();  {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Member> criteria = cb.createQuery(Member.class);
         Root<Member> member = criteria.from(Member.class);
@@ -56,5 +63,10 @@ public class MemberRepository {
         // criteria.select(member).orderBy(cb.asc(member.get(Member_.name)));
         criteria.select(member).orderBy(cb.asc(member.get("name")));
         return em.createQuery(criteria).getResultList();
-    }
+    }*/
+
+    public List<Member> findAllByOrderByNameAsc();
+    
+
+    public long count();
 }

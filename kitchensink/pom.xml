@@ -18,21 +18,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.3</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+    <!--
     <parent>
         <groupId>org.jboss.eap.quickstarts</groupId>
-        <artifactId>jboss-eap-quickstart-parent</artifactId>
-        <!--
-        Maintain separation between the artifact id and the version to help prevent
-        merge conflicts between commits changing the GA and those changing the V.
-        -->
+        <artifactId>jboss-eap-quickstart-parent</artifactId>       
         <version>6.0.0.redhat-00001</version>
         <relativePath/>
     </parent>
-    <artifactId>kitchensink</artifactId>
-    <version>8.0.0.GA</version>
-    <packaging>war</packaging>
-    <name>Quickstart: kitchensink</name>
-    <description>A starter Jakarta EE web application project for use in JBoss EAP</description>
+    -->
+
+    <artifactId>kitchensink-spring</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
+    <name>Quickstart: kitchensink-spring</name>
+    <description>A starter Jakarta EE web application project for use in JBoss EAP, now migrated to Spring Boot</description>
 
     <licenses>
         <license>
@@ -43,9 +48,12 @@
     </licenses>
 
     <properties>
+        <java.version>21</java.version>
         <!-- The versions for BOMs, Dependencies and Plugins -->
         <version.server.bom>8.0.0.GA-redhat-00009</version.server.bom>
         <version.eap.maven.plugin>1.0.0.Final-redhat-00014</version.eap.maven.plugin>
+      
+        <joinfaces.version>5.3.3</joinfaces.version>
     </properties>
 
     <repositories>
@@ -115,6 +123,45 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!--
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.3.3</version>
+                <type>pom</type>
+                <scope>import</scope>
+        </dependency>
+        -->
+
+            <!--
+            <dependency>
+                <groupId>org.joinfaces</groupId>
+                <artifactId>joinfaces-platform</artifactId>
+                <version>5.3.3</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            -->
+
+            
+            <dependency>
+                <groupId>org.joinfaces</groupId>
+                <artifactId>joinfaces-dependencies</artifactId>
+                <version>${joinfaces.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!--
+            <dependency>
+                <groupId>org.joinfaces</groupId>
+                <artifactId>joinfaces-bom</artifactId>
+                <version>${joinfaces.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            -->
         </dependencies>
     </dependencyManagement>
 
@@ -153,7 +200,7 @@
             <artifactId>jakarta.activation-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
+    
         <!-- Bean Validation Implementation 
         Provides portable constraints such as @Email 
         Hibernate Validator is shipped in JBoss EAP -->
@@ -249,7 +296,57 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Import new Spring Boot dependencies -->
+        
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		</dependency>
+        
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
+        </dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+        <!-- JoinFaces dependency -->
+        <dependency>
+            <groupId>org.joinfaces</groupId>
+            <artifactId>faces-spring-boot-starter</artifactId>
+            <version>5.3.3</version>
+        </dependency>
+
+        <!--no embedded tomcat server
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        -->
+        
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+		        <groupId>org.springframework.boot</groupId>
+		        <artifactId>spring-boot-maven-plugin</artifactId>
+	        </plugin>
+        </plugins>
+
+
+        <finalName>${artifactId}</finalName>
+    </build>
 
     <profiles>
         <profile>

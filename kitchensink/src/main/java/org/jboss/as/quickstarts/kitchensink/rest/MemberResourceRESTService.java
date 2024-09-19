@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -43,6 +44,7 @@ import jakarta.ws.rs.core.Response;
 import org.jboss.as.quickstarts.kitchensink.data.MemberRepository;
 import org.jboss.as.quickstarts.kitchensink.model.Member;
 import org.jboss.as.quickstarts.kitchensink.service.MemberRegistration;
+//import org.springframework.web.bind.annotation.RestController;
 
 /**
  * JAX-RS Example
@@ -68,18 +70,19 @@ public class MemberResourceRESTService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Member> listAllMembers() {
-        return repository.findAllOrderedByName();
+
+        return repository.findAllByOrderByNameAsc();
     }
 
     @GET
-    @Path("/{id:[0-9][0-9]*}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Member lookupMemberById(@PathParam("id") long id) {
-        Member member = repository.findById(id);
-        if (member == null) {
+    public Member lookupMemberById(@PathParam("id") String id) {
+        Optional<Member> member = repository.findById(id);
+        if (member.isEmpty()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        return member;
+        return member.get();
     }
 
     /**
