@@ -30,4 +30,4 @@ atlassian-ide-plugin.xml
 .nbattrs
 *.log
 build.metadata
-src/main/resources/application.properties
+src/main/resources/env.properties
