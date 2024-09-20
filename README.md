@@ -1,7 +1,6 @@
-# Overview
-**kitchensink-spring**
+# kitchensink-spring
 
-Migrate of JBoss EAP kitchensink quickstart app to Spring Boot 3.3.3  
+Migration of JBoss EAP kitchensink quickstart app to Spring Boot 3.3.3  
 
 Uses exising Jersey REST service (spring-boot-starter-jersey) and JSF views ([JoinFaces](https://github.com/joinfaces/joinfaces)).
 
@@ -15,11 +14,9 @@ Maven
 
 Clone repository locally.  
   
-Create `env.properties` file in the `src/main/resources` directory and configure your MongoDB URI (example Atlas URI):  
+Modify `application.properties` file in the `src/main/resources` directory and configure your MongoDB URI (example Atlas URI):  
 `MONGODB_URI=mongodb+srv://<USER>:<PWD>@clusterX.XXXX.mongodb.net/?retryWrites=true&w=majority&appName=kitchensink-spring`
 
-Build the project:  
-`mvn package`  
-  
-Run the project:
+
+Run the project from command line in the main directory:
 `mvn spring-boot:run`
